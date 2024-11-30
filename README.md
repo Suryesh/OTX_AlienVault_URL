@@ -35,4 +35,4 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 8.  Press `Enter` for single domain and enter your domain and for passing the subdomain file type `f`
 9.  Output will be saved automatically
 
-![Description of image](img/result.jpg)
+![Description of image](img/result.png)
