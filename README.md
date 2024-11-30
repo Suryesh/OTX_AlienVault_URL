@@ -16,4 +16,11 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 
 # Usages
 
-Clone This Repository
+1. Clone This Repository
+   `git clone https://github.com/Suryesh/OTX_AlienVault_URL.git`
+2. Now go to OTX_AlienVault_URL directory
+   `cd OTX_AlienVault_URL`
+3. Give File Executable Permission
+   `chmod +x alien.sh`
+4. Now good to go, run the file
+   `./alien.sh or bash alien.sh`
