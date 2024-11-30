@@ -8,7 +8,7 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 
 # Features
 
-- Automated Scraping: Fetches URLs associated with a domain in paginated batches.
+- **Automated Scraping:** Fetches URLs associated with a domain in paginated batches.
 - Error Handling: Stops gracefully when no more URLs are available.
 - Output Management: Saves all results in a timestamped, organized folder structure for easy access.
 - Interactive Input: Prompts the user for input with a user-friendly interface.
