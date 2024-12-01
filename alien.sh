@@ -20,37 +20,32 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
 
-# Update check function
-check_for_updates() {
-    repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/main/alien.sh"
-    local_script="$(realpath "$0")"
+#!/bin/bash
 
-    echo -e "\033[1;34m[INFO]\033[0m Checking for updates..."
+# Update Check
+repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/main/alien.sh"
+
+script_path="$(realpath "$0")"
+script_dir="$(dirname "$script_path")"
+
+update_script() {
+    echo "[INFO] Fetching the latest version from $repo_url..."
     latest_script=$(curl -s "$repo_url")
-
-    if [[ -z "$latest_script" ]]; then
-        echo -e "\033[1;31m[ERROR]\033[0m Unable to fetch the latest script. Check your internet connection."
-        return
-    fi
-
-    if [[ "$latest_script" != "$(cat "$local_script")" ]]; then
-        echo -e "\033[1;34m[INFO]\033[0m A new version of the script is available."
-        echo -n "Do you want to update? (y/n): "
-        read -r update_choice
-        if [[ "$update_choice" == "y" ]]; then
-            echo "$latest_script" > "$local_script"
-            chmod +x "$local_script"
-            echo -e "\033[1;32m[INFO]\033[0m Script updated successfully. Restarting..."
-            exec "$local_script" "$@"
-        else
-            echo -e "\033[1;34m[INFO]\033[0m Update skipped. Continuing with the current version."
-        fi
+    if [ "$latest_script" == "$(cat "$script_path" 2>/dev/null)" ]; then
+        echo "[INFO] Script is already up-to-date."
+        return 0
     else
-        echo -e "\033[1;34m[INFO]\033[0m You are using the latest version of the script."
+        echo "[INFO] Updating script..."
+        echo "$latest_script" > "$script_path"
+        chmod +x "$script_path"
+        echo "[INFO] Script updated successfully."
+
+        # Restart the script
+        echo "[INFO] Restarting the script..."
+        exec "$script_path"
     fi
 }
-
-check_for_updates "$@"
+update_script
 
 # Function to check dependencies
 check_dependencies() {
