@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Banner
+echo -e "\033[1;31m"
 cat << "EOF"
 
  █████╗ ██╗     ██╗███████╗███╗   ██╗    ██╗   ██╗██████╗ ██╗     ███████╗
@@ -12,11 +13,44 @@ cat << "EOF"
                                            		Built by Suryesh
 
 EOF
+echo -e "\033[0m"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
+
+# Update check function
+check_for_updates() {
+    repo_url="https://raw.githubusercontent.com/yourusername/yourrepo/main/otx_scraper.sh"
+    local_script="$(realpath "$0")"
+
+    echo -e "\033[1;34m[INFO]\033[0m Checking for updates..."
+    latest_script=$(curl -s "$repo_url")
+
+    if [[ -z "$latest_script" ]]; then
+        echo -e "\033[1;31m[ERROR]\033[0m Unable to fetch the latest script. Check your internet connection."
+        return
+    fi
+
+    if [[ "$latest_script" != "$(cat "$local_script")" ]]; then
+        echo -e "\033[1;34m[INFO]\033[0m A new version of the script is available."
+        echo -n "Do you want to update? (y/n): "
+        read -r update_choice
+        if [[ "$update_choice" == "y" ]]; then
+            echo "$latest_script" > "$local_script"
+            chmod +x "$local_script"
+            echo -e "\033[1;32m[INFO]\033[0m Script updated successfully. Restarting..."
+            exec "$local_script" "$@"
+        else
+            echo -e "\033[1;34m[INFO]\033[0m Update skipped. Continuing with the current version."
+        fi
+    else
+        echo -e "\033[1;34m[INFO]\033[0m You are using the latest version of the script."
+    fi
+}
+
+check_for_updates "$@"
 
 # Function to check dependencies
 check_dependencies() {
