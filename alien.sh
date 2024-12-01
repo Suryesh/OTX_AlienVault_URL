@@ -10,14 +10,34 @@ cat << "EOF"
 ██║  ██║███████╗██║███████╗██║ ╚████║    ╚██████╔╝██║  ██║███████╗███████║
 ╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝     ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
                                            		Built by Suryesh
-                                           		                                           		
+
 EOF
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
+
+# Function to check dependencies
+check_dependencies() {
+    local dependencies=("curl" "jq")
+    local missing=()
+
+    echo -e "${BLUE}[INFO] Checking dependencies...${NC}"
+    for dep in "${dependencies[@]}"; do
+        if ! command -v "$dep" &>/dev/null; then
+            missing+=("$dep")
+        fi
+    done
+
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo -e "${RED}[ERROR] Missing dependencies: ${missing[*]}.${NC}"
+        echo -e "${BLUE}[INFO] Please install the missing dependencies and try again.${NC}"
+        exit 1
+    fi
+
+    echo -e "${GREEN}[INFO] All dependencies are installed.${NC}"
+}
 
 process_domain() {
     local domain=$1
@@ -54,40 +74,45 @@ process_domain() {
 }
 
 # Main script
-echo -n -e "${BLUE}Do you want to pass a single domain or a file containing subdomains? (Press 'Enter' for single domain, type 'f' for file): ${NC}"
-read -e input_type
+check_dependencies
 
-if [ "$input_type" == "" ]; then
-    # User pressed Enter for single domain
-    echo -n -e "${BLUE}Enter the domain (e.g., example.com): ${NC}"
-    read -e domain
+echo -e "${BLUE}Choose an option:${NC}"
+echo -e "${GREEN}1.${NC} Process a single domain"
+echo -e "${GREEN}2.${NC} Process a file containing subdomains"
+echo -n -e "${BLUE}Enter your choice [1/2]: ${NC}"
+read -r choice
 
-    if [ -z "$domain" ]; then
-        echo -e "${RED}[ERROR] No domain provided. Exiting.${NC}"
-        exit 1
-    fi
+case $choice in
+    1)
+        echo -n -e "${BLUE}Enter the domain (e.g., example.com): ${NC}"
+        read -r domain
 
-    process_domain "$domain"
-
-elif [ "$input_type" == "f" ]; then
-
-    echo -n -e "${BLUE}Enter the path to the file containing subdomains without HTTP/HTTPS (e.g., /path/subdomains.txt): ${NC}"
-    read -e subdomain_file
-
-    if [ ! -f "$subdomain_file" ]; then
-        echo -e "${RED}[ERROR] File not found. Exiting.${NC}"
-        exit 1
-    fi
-
-    while IFS= read -r subdomain; do
-        if [ -n "$subdomain" ]; then
-            process_domain "$subdomain"
+        if [ -z "$domain" ]; then
+            echo -e "${RED}[ERROR] No domain provided. Exiting.${NC}"
+            exit 1
         fi
-    done < "$subdomain_file"
 
-else
-    echo -e "${RED}[ERROR] Invalid input type. Please press Enter for single domain or type 'f' for file. Exiting.${NC}"
-    exit 1
-fi
+        process_domain "$domain"
+        ;;
+    2)
+        echo -n -e "${BLUE}Enter the path to the file containing subdomains without HTTP/HTTPS (e.g., /path/subdomains.txt): ${NC}"
+        read -r subdomain_file
+
+        if [ ! -f "$subdomain_file" ]; then
+            echo -e "${RED}[ERROR] File not found. Exiting.${NC}"
+            exit 1
+        fi
+
+        while IFS= read -r subdomain; do
+            if [ -n "$subdomain" ]; then
+                process_domain "$subdomain"
+            fi
+        done < "$subdomain_file"
+        ;;
+    *)
+        echo -e "${RED}[ERROR] Invalid choice. Please enter 1 or 2. Exiting.${NC}"
+        exit 1
+        ;;
+esac
 
 exit 0
