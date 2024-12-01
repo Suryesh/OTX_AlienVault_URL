@@ -48,6 +48,9 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 
 ![Result](img/results.png)
 
+### Update Feature
+![update](img/update.png)
+
 
 ## Contributors
 
