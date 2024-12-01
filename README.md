@@ -13,6 +13,7 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 - **Output Management:** Saves all results in a timestamped, organized folder structure for easy access.
 - **Interactive Input:** Prompts the user for input with a user-friendly interface.
 - **Colored Output:** Displays informational, error, and success messages with clear color coding for better readability.
+- **Update Feature:** Prompt to the user for latest Version
 
 # Usages
 
