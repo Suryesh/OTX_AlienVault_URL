@@ -46,3 +46,10 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 ### Results
 
 ![Result](img/result.png)
+
+
+## Contributor
+
+## Contributors
+
+- [Sangharsha](https://github.com/noob6t5)
