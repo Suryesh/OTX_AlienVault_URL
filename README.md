@@ -37,15 +37,15 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
 
 # Screenshots
 
-### Domain
-![Domain](img/domain.png)
+### Format
+![Domain](img/format.png)
 
 ### Subdomain
-![File](img/file.png)
+![File](img/target.png)
 
 ### Results
 
-![Result](img/result.png)
+![Result](img/results.png)
 
 
 ## Contributors
