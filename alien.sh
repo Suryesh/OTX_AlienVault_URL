@@ -22,7 +22,7 @@ NC='\033[0m' # No color
 
 # Update check function
 check_for_updates() {
-    repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/refs/heads/main/alien.sh"
+    repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/main/alien.sh"
     local_script="$(realpath "$0")"
 
     echo -e "\033[1;34m[INFO]\033[0m Checking for updates..."
