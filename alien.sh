@@ -162,7 +162,7 @@ while true; do
     2)
         clear
         while true; do
-            echo -n -e "${BLUE}Enter the path to the file containing subdomains without HTTP/HTTPS (e.g., /path/subdomains.txt): ${NC}"
+            echo -n -e "${BLUE}Enter the path : ${NC}"
             read -r subdomain_file
 
             if [ ! -f "$subdomain_file" ]; then
