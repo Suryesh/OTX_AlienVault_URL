@@ -9,7 +9,7 @@ cat <<"EOF"
 ██╔══██║██║     ██║██╔══╝  ██║╚██╗██║    ██║   ██║██╔══██╗██║     ╚════██║
 ██║  ██║███████╗██║███████╗██║ ╚████║    ╚██████╔╝██║  ██║███████╗███████║
 ╚═╝  ╚═╝╚══════╝╚═╝╚══════╝╚═╝  ╚═══╝     ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
-                                          Built by Suryesh, V: 0.4
+                                          Built by Suryesh, V: 0.5
 EOF
 echo -e "\033[0m"
 
@@ -18,6 +18,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
 
+#checking update
 check_for_updates() {
     repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/main/alien.sh"
     local_script="$(realpath "$0")"
@@ -49,12 +50,14 @@ check_for_updates() {
     fi
 }
 
+
+#checking dependencies
 check_dependencies() {
     local dependencies=("curl" "jq")
     local missing=()
 
     echo -e "${BLUE}[INFO]${NC} Checking dependencies..."
-    sleep 1 # Brief pause
+    sleep 1
     for dep in "${dependencies[@]}"; do
         if ! command -v "$dep" &>/dev/null; then
             missing+=("$dep")
@@ -70,6 +73,15 @@ check_dependencies() {
     echo -e "${GREEN}[INFO]${NC} All dependencies are installed."
     sleep 1
     clear
+}
+
+# Function to validate domain format
+is_valid_domain() {
+    if [[ "$1" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$ ]]; then
+        return 0 # Valid domain
+    else
+        return 1 # Invalid domain
+    fi
 }
 
 process_domain() {
@@ -128,6 +140,12 @@ while true; do
             echo -e "${RED}[ERROR]${NC} No domain provided."
             continue
         fi
+        
+        # Validate the domain format
+            if ! is_valid_domain "$domain"; then
+                echo -e "${RED}[ERROR]${NC} Invalid domain format. Please enter a valid domain (e.g., example.com, sub.example.com)."
+                continue
+            fi
 
         process_domain "$domain"
         break
@@ -158,7 +176,11 @@ while true; do
 
             while IFS= read -r subdomain; do
                 if [ -n "$subdomain" ]; then
-                    process_domain "$subdomain"
+                    # Validate the subdomain format
+                    validate_domain "$subdomain"
+                    if [ $? -eq 0 ]; then
+                        process_domain "$subdomain"
+                    fi
                 fi
             done <"$subdomain_file"
             break
