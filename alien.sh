@@ -78,9 +78,18 @@ check_dependencies() {
 # Function to validate domain format
 is_valid_domain() {
     if [[ "$1" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$ ]]; then
-        return 0 # Valid domain
+        return 0
     else
-        return 1 # Invalid domain
+        return 1
+    fi
+}
+
+# Function to validate file path
+is_valid_file_path() {
+    if [[ -f "$1" && -r "$1" ]]; then
+        return 0
+    else
+        return 1
     fi
 }
 
@@ -177,9 +186,10 @@ while true; do
             while IFS= read -r subdomain; do
                 if [ -n "$subdomain" ]; then
                     # Validate the subdomain format
-                    validate_domain "$subdomain"
-                    if [ $? -eq 0 ]; then
+                    if is_valid_domain "$subdomain"; then
                         process_domain "$subdomain"
+                    else
+                        echo -e "${RED}[ERROR]${NC} Invalid subdomain format: $subdomain."
                     fi
                 fi
             done <"$subdomain_file"
