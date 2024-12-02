@@ -162,7 +162,7 @@ while true; do
     2)
         clear
         while true; do
-            echo -n -e "${BLUE}Enter the path : ${NC}"
+            echo -n -e "${BLUE}Enter the file path : ${NC}"
             read -r subdomain_file
 
             if [ ! -f "$subdomain_file" ]; then
