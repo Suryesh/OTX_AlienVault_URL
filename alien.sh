@@ -163,7 +163,7 @@ while true; do
         clear
         while true; do
             echo -n -e "${BLUE}Enter the file path : ${NC}"
-            read -r subdomain_file
+            read -e -r subdomain_file
 
             if [ ! -f "$subdomain_file" ]; then
                 echo -e "${RED}[ERROR]${NC} File not found. Please try again or press [q] to quit."
