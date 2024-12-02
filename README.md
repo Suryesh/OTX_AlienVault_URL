@@ -33,7 +33,7 @@ The script utilizes the AlienVault OTX API to query URLs linked to the specified
    ```
    ./alien.sh or bash alien.sh
    ```
-8.  Press `Enter` for single domain and enter your domain and for passing the subdomain file type `f`
+8.  Choose Option `1` or `2`
 9.  Output will be saved automatically
 
 # Screenshots
