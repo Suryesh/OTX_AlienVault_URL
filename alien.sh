@@ -20,8 +20,6 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color
 
-#!/bin/bash
-
 check_for_updates() {
     repo_url="https://raw.githubusercontent.com/Suryesh/OTX_AlienVault_URL/main/alien.sh"
     local_script="$(realpath "$0")"
@@ -36,8 +34,7 @@ check_for_updates() {
     fi
 
     echo -e "\033[1;34m[INFO]\033[0m Fetched latest script content."
-
-    # Check if the content has changed
+    
     if [[ "$latest_script" != "$(cat "$local_script")" ]]; then
         echo -e "\033[1;34m[INFO]\033[0m A new version of the script is available."
         echo -n "Do you want to update? (y/n): "
